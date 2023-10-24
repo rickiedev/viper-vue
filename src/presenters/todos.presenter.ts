@@ -1,5 +1,6 @@
 import { TodoInteractor } from "@/interactors/todo.interactor";
 import { Todo } from "@/services/todo.service";
+import { BadRequestError, DataError, NotFoundError } from "@/utils/error";
 
 export interface ITodoView {
   loadData(todos: Todo[]): void;
@@ -20,7 +21,15 @@ export class TodoPresenter {
     try {
       return await this.interactor.getAll();
     } catch (error: any) {
-      this.view.showError(error.message);
+      if (error instanceof DataError) {
+        this.view.showError("Data is empty");
+      } else if (error instanceof BadRequestError) {
+        this.view.showError("Invalid response from the repository");
+      } else if (error instanceof NotFoundError) {
+        this.view.showError("Todo can not found");
+      } else {
+        this.view.showError("Error system");
+      }
       return [];
     }
   }
@@ -29,11 +38,18 @@ export class TodoPresenter {
     try {
       await this.interactor.create(todo);
       this.view.loadData(await this.interactor.getAll());
-      this.view.resetInput();
     } catch (error: any) {
-      this.view.showError(error.message);
+      if (error instanceof DataError) {
+        this.view.showError("Data input invalid");
+      } else if (error instanceof BadRequestError) {
+        this.view.showError("Invalid response from the repository");
+      } else if (error instanceof NotFoundError) {
+        this.view.showError("Todo can not found");
+      } else {
+        this.view.showError("Error system");
+      }
+    } finally {
       this.view.resetInput();
-
     }
   }
 
@@ -41,11 +57,18 @@ export class TodoPresenter {
     try {
       await this.interactor.update(todo);
       this.view.loadData(await this.interactor.getAll());
-      this.view.resetInput();
     } catch (error: any) {
-      this.view.showError(error.message);
+      if (error instanceof DataError) {
+        this.view.showError("Data input invalid");
+      } else if (error instanceof BadRequestError) {
+        this.view.showError("Invalid response from the repository");
+      } else if (error instanceof NotFoundError) {
+        this.view.showError("Todo can not found");
+      } else {
+        this.view.showError("Error system");
+      }
+    } finally {
       this.view.resetInput();
-
     }
   }
 }

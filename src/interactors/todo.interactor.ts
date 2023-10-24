@@ -1,6 +1,5 @@
 import { TodoModel } from "@/models/todo.model";
 import { ITodoService, Todo, TodoService } from "@/services/todo.service";
-import { BadRequestError, DataError, NotFoundError } from "@/utils/error";
 
 export class TodoInteractor {
   private todoService: ITodoService;
@@ -13,15 +12,7 @@ export class TodoInteractor {
     try {
       return this.todoService.getAll();
     } catch (error) {
-      if (error instanceof DataError) {
-        throw new Error("Data is empty");
-      } else if (error instanceof BadRequestError) {
-        throw new Error("Invalid response from the repository");
-      } else if (error instanceof NotFoundError) {
-        throw new Error("Todo can not found");
-      } else {
-        throw new Error("Error system");
-      }
+      throw error;
     }
   }
 
@@ -33,15 +24,7 @@ export class TodoInteractor {
 
       this.todoService.create(newTodo.todoModel);
     } catch (error) {
-      if (error instanceof DataError) {
-        throw new Error("Data input invalid");
-      } else if (error instanceof BadRequestError) {
-        throw new Error("Invalid response from the repository");
-      } else if (error instanceof NotFoundError) {
-        throw new Error("Todo can not found");
-      } else {
-        throw new Error("Error system");
-      }
+      throw error;
     }
   }
 
@@ -55,15 +38,7 @@ export class TodoInteractor {
 
       this.todoService.update(updatedTodo.todoModel);
     } catch (error) {
-      if (error instanceof DataError) {
-        throw new Error("Data input invalid");
-      } else if (error instanceof BadRequestError) {
-        throw new Error("Invalid response from the repository");
-      } else if (error instanceof NotFoundError) {
-        throw new Error("Todo can not found");
-      } else {
-        throw new Error("Error system");
-      }
+      throw error;
     }
   }
 }
