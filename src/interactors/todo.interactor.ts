@@ -4,8 +4,8 @@ import { ITodoService, Todo, TodoService } from "@/services/todo.service";
 export class TodoInteractor {
   private todoService: ITodoService;
 
-  constructor(postService: ITodoService | null = null) {
-    this.todoService = postService ?? new TodoService();
+  constructor(todoService: ITodoService | null = null) {
+    this.todoService = todoService ?? new TodoService();
   }
 
   async getAll(): Promise<Todo[]> {

@@ -95,7 +95,6 @@ import {
   getCurrentInstance,
   reactive,
   ref,
-  watch,
 } from "vue";
 import { Todo } from "@/services/todo.service";
 import { ITodoView, TodoPresenter } from "@/presenters/todos.presenter";

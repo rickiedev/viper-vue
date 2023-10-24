@@ -1,5 +1,5 @@
 import { request } from "@/utils/request";
-import { BadRequestError, DataError, NotFoundError } from "@/utils/error";
+import { BadRequestError, NotFoundError } from "@/utils/error";
 
 export type Todo = {
   id?: number;
