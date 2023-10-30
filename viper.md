@@ -75,7 +75,7 @@ export class TodoModel {
 
 - Tầng Repo chịu trách nhiệm về việc tương tác với các nguồn dữ liệu bên ngoài như API, database,...
 - Xử lý dữ liệu: Tầng này có trách nhiệm đảm bảo dữ liệu được định dạng đúng kiểu dữ liệu. Ví dụ, kiểu `Todo` để định nghĩa cấu trúc của dữ liệu liên quan, để đảm bảo rằng dữ liệu được định dạng đúng
-- __Tra cứu và tìm kiếm dữ liệu: cung cấp các phương thức để tra cứu và tìm kiếm dữ liệu từ các nguồn khác nhau__ > sai
+
 - Xử lý lỗi và exception: Chúng ta sử dụng các exception như `BadRequestError`, `NotFoundError` để xử lý các trường hợp lỗi cụ thể để đóng gói mã lỗi trả về từ hệ thống ngoài tách biệt với ứng dụng
 - Do giao tiếp với hệ thống ngoài nên ta cần triển khai interface để thuận lợi cho việc testing
 - Ta có thể sử dụng khai báo `type` để xác định các trường dữ liệu cần thiết, vì chúng không tạo ra mã ở thời điểm biên dịch
