@@ -1,5 +1,10 @@
 <template>
   <v-container ref="todoApp" class="todo-container" fluid>
+    <!-- <v-row>
+      <v-col>
+        <hello-world />
+      </v-col>
+    </v-row> -->
     <v-row
       align="center"
       justify="center"
@@ -98,71 +103,64 @@ import {
 } from "vue";
 import { Todo } from "@/services/todo.service";
 import { ITodoView, TodoPresenter } from "@/presenters/todos.presenter";
+import HelloWorld from "@/components/HelloWorld.vue";
 
 export default {
-  setup() {
-    const todos = ref<Todo[]>([]);
-    const errorDisplay = ref<string>("");
-    const todo = reactive<Todo>({
-      userId: 1,
-      title: "",
-      completed: false,
-    });
-    const activeToast = ref<boolean>(false);
+    setup() {
+        const todos = ref<Todo[]>([]);
+        const errorDisplay = ref<string>("");
+        const todo = reactive<Todo>({
+            userId: 1,
+            title: "",
+            completed: false,
+        });
+        const activeToast = ref<boolean>(false);
+        const presenter = new TodoPresenter(getCurrentInstance()?.proxy as ComponentPublicInstance<ITodoView>);
+        function resetInput() {
+            todo.title = "";
+        }
+        function loadData(updatedTodos: Todo[]) {
+            todos.value = [...updatedTodos];
+        }
+        function showError(error: string) {
+            errorDisplay.value = error;
+            activeToast.value = true;
+            setTimeout(() => {
+                activeToast.value = false;
+            }, 5000);
+        }
 
-    const presenter = new TodoPresenter(
-      getCurrentInstance()?.proxy as ComponentPublicInstance<ITodoView>
-    );
-
-    function resetInput() {
-      todo.title = "";
-    }
-
-    function loadData(updatedTodos: Todo[]) {
-      todos.value = [...updatedTodos];
-    }
-
-    function showError(error: string) {
-      errorDisplay.value = error;
-      activeToast.value = true;
-      setTimeout(() => {
-        activeToast.value = false
-      }, 5000);
-    }
-
-
-    async function getListTodo() {
-      todos.value = await presenter.getAll();
-    }
-
-    async function addTodo() {
-      await presenter.create(todo);
-    }
-
-    async function handleUpdatedTodo(todo: Todo) {
-      await presenter.update(todo);
-    }
-
-    async function deleteTodo(id: number) {
-      console.log(id);
-    }
-
-    getListTodo();
-
-    return {
-      todos,
-      errorDisplay,
-      todo,
-      activeToast,
-      resetInput,
-      loadData,
-      showError,
-      getListTodo,
-      addTodo,
-      handleUpdatedTodo,
-      deleteTodo,
-    };
-  },
+        const todoViewMethod: ITodoView = {
+            resetInput,
+            loadData,
+            showError,
+        };
+        async function getListTodo() {
+            todos.value = await presenter.getAll();
+        }
+        async function addTodo() {
+            await presenter.create(todo);
+        }
+        async function handleUpdatedTodo(todo: Todo) {
+            await presenter.update(todo);
+        }
+        async function deleteTodo(id: number) {
+            console.log(id);
+        }
+        getListTodo();
+        return {
+            todos,
+            errorDisplay,
+            todo,
+            activeToast,
+            todoViewMethod,
+            getListTodo,
+            addTodo,
+            handleUpdatedTodo,
+            deleteTodo,
+        };
+    },
+    components: { HelloWorld }
 };
 </script>
 
